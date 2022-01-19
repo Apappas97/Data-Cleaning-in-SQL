@@ -18,7 +18,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 * Delete unused columns
 # Queries:
 ## Convert the Column "SaleDate" from a DateTime Format to a Standardized Date Format "YYYY-MM-DD"
-<img width ="400" height="300" src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Date_Converted.png">
+<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Date_Converted.png">
 </p>
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/SaleDate_Results.png">
 </p>
@@ -32,7 +32,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 * When the Parcel-ID is repeated with the same ID more than once, then the Property Address will do so as well.
     * However, there are some discrepancies where the Property Address generates a NULL value instead of duplicating the same address that was used before. 
 
-### Display and Replace the All NULL Values with an Address that Shares the same Parcel-ID 
+### Replace Empty Fields in "PropertyAddress" with an Address that Shares the same Parcel-ID 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL.png">
 </p>
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL_Results.png">
@@ -42,6 +42,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 * To confirm that the addresses were populated, I ran the script and it checks out that there are no longer any NULL values in the "PropertyAddress" column. 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Update_property.png">
 </p> 
+
 ## Seperate the Address and City in the "PropertyAddress" Column 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Breakout.png">
 </p>
@@ -75,3 +76,14 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 </p>
 
 * Note that there are now more occurances when Yes and No are diplayed in the dataset due to converting Y/N to Yes/No.
+## Identify and Delete all Duplicate Values from the Dataset
+<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/cte.png">
+</p>
+
+* 104 rows of duplicates were Identified 
+## Drop Columns Unused Columns
+<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Delete.png">
+</p>
+
+* No longer need "PropertyAddress" and "OwnerAddress" because individual columns were created to represent address, city, and state.
+* No longer need "SaleDate" because the new column "Date_of_Sale" was created for the purpose of re-formatting the date. 
