@@ -81,7 +81,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 </p>
 
 * 104 rows of duplicates were Identified 
-## Drop Columns Unused Columns
+## Drop Unused Columns
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Delete.png">
 </p>
 
