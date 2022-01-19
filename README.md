@@ -28,11 +28,13 @@ In this project, I extracted a Nashville-Housing dataset in which I found incons
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/IDandAddress.png">
 </p>
 
-* The ParcelID and PropertyAddress are linked, however, sometimes when the ParcelID is duplicated the PropertyAddress generates a NULL value. 
-#### Use a JOIN and ISNULL statement to locate and replace NULL values with addresses that come from another duplicated ParcelID like the ones you see above
+* The ParcelID and PropertyAddress are linked, however, sometimes when the ParcelID is duplicated the PropertyAddress will contain a NULL value. 
+#### Use JOIN and ISNULL to locate and replace NULL values with an address that uses the same ParcelID
 <img width= "700" height="350" src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL.png">
 </p>
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL_Results.png">
 </p>
 
-* 
+* All the NULL values will be populated with the ones with (No column name)
+
+
