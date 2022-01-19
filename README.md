@@ -39,11 +39,11 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 </p>
 
 ### Populate Values and Update Table 
-* To confirm that the addresses were populated, I ran the script and it checks out that there are no longer any NULL values in the "PropertyAddress" column. 
+* To confirm that the addresses were populated, I ran the script, and it checks out that there are no longer any NULL values in the "PropertyAddress" column. 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Update_property.png">
 </p> 
 
-## Seperate the Address and City in the "PropertyAddress" Column 
+## Separate the Address and City in the "PropertyAddress" Column 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Breakout.png">
 </p>
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Breakout_Results.png">
@@ -52,7 +52,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 * Starting from position 1 up to the comma to obtain only the address portion 
 * Starting 1 position after the comma up to the end of the string will obtain the city
 * Create new columns and populate them with values obtained from the SUBSTRINGS
-## Seperate the Address, City, and State in the "OwnerAddress" Column 
+## Separate the Address, City, and State in the "OwnerAddress" Column 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Owner_Breakout.png">
 </p>
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Owner_Results.png">
@@ -60,7 +60,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 
 * PARESENAME is an alternative to SUBSTRING that does not recognize a ',' as a delimiter but instead recognizes a period '.' as one. 
    * Used REPLACE to substitute commas for periods 
-## Usa a CASE Statement to Change Y and N to Yes and No in the "SoldAsVacant" Column
+## Use a CASE Statement to Change Y and N to Yes and No in the "SoldAsVacant" Column
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_Before.png">
 </p>
 
@@ -75,7 +75,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_After.png">
 </p>
 
-* Note that there are now more occurances when Yes and No are diplayed in the dataset due to converting Y/N to Yes/No.
+* Note that there are now more occurrences when Yes and No are displayed in the dataset due to converting Y/N to Yes/No.
 ## Identify and Delete all Duplicate Values from the Dataset
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/cte.png">
 </p>
