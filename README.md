@@ -30,9 +30,9 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 
 * Each Parcel-ID is assigned to a Property Address. 
 * When the Parcel-ID is repeated with the same ID more than once, then the Property Address will do so as well.
-    * However, there are some discrepancies where the Property Address generates a NULL value instead of duplicating the same address that was used before. 
+    * However, there are some discrepancies where the Property Address generates a NULL address instead of a duplicate. 
 
-### Replace Empty Fields in "PropertyAddress" with an Address that Shares the same Parcel-ID 
+### Replace All NULL addresses in "PropertyAddress" with Addresses that Have the Same Duplicated Parcel-ID
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL.png">
 </p>
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL_Results.png">
