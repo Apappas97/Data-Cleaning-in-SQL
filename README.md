@@ -20,6 +20,26 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 ## Convert the Column "SaleDate" from a DateTime Format to a Standardized Date Format "YYYY-MM-DD"
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Date_Converted.png">
 </p>
+
+```TSQL
+SELECT 
+	SaleDate, 
+	CONVERT(Date,SaleDate)
+FROM 
+	[Portfolio Project]..HousingData
+
+-- Add a new column labeled "Date_of_Sale"
+ALTER TABLE 
+	HousingData
+ADD 
+	Date_of_Sale Date;
+
+-- Populate Date_of_Sale with the new format
+UPDATE 
+	HousingData
+SET 
+	Date_of_Sale = CONVERT(Date,SaleDate)
+```
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/SaleDate_Results.png">
 </p>
 
@@ -35,55 +55,206 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 ### Replace All NULL addresses in "PropertyAddress" with Addresses that Have the Same Duplicated Parcel-ID
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL.png">
 </p>
+
+```TSQL
+SELECT 
+	a.ParcelID,
+	a.PropertyAddress, 
+	b.ParcelID,
+	b.PropertyAddress,
+	-- Use ISNULL to locate NULL addresses in a.PropertyAddress and replace with b.PropertyAddress
+	ISNULL(a.PropertyAddress, b.PropertyAddress)
+FROM 
+	[Portfolio Project]..HousingData a
+JOIN 
+	[Portfolio Project]..HousingData b
+	ON a.ParcelID = b.ParcelID
+	AND a.[UniqueID ] <> b.[UniqueID ]
+WHERE 
+	a.PropertyAddress IS NULL
+```
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL_Results.png">
 </p>
 
 ### Populate Values and Update Table 
-* To confirm that the addresses were populated, I ran the script, and it checks out that there are no longer any NULL values in the "PropertyAddress" column. 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Update_property.png">
 </p> 
 
+```TSQL
+UPDATE a
+SET 
+	PropertyAddress = ISNULL(a.PropertyAddress, b.PropertyAddress) 
+FROM 
+	[Portfolio Project]..HousingData a
+JOIN 
+	[Portfolio Project]..HousingData b
+	ON a.ParcelID = b.ParcelID
+	AND a.[UniqueID ] <> b.[UniqueID ]
+WHERE 
+	a.PropertyAddress IS NULL
+```
+* To confirm that the addresses were populated, I ran the script, and it checks out that there are no longer any NULL values in the "PropertyAddress" column. 
 ## Separate the Address and City in the "PropertyAddress" Column 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Breakout.png">
 </p>
+
+```TSQL
+SELECT 
+	PropertyAddress,
+	-- Starting from position 1 up to the comma to obtain the address
+	SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1) AS Address,
+	-- Starting 1 position after the comma up to the end of the string to obtain the city
+	SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress)) AS City
+FROM 
+	[Portfolio Project]..HousingData
+
+-- Create new columns
+ALTER TABLE 
+	HousingData
+ADD
+	Property_Address NVARCHAR(255),
+	Property_City NVARCHAR(255);
+
+-- Populate columns
+UPDATE 
+	HousingData
+SET 
+	Property_Address = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1),
+	Property_City = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress));
+```
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Breakout_Results.png">
 </p>
 
-* Starting from position 1 up to the comma to obtain only the address portion 
-* Starting 1 position after the comma up to the end of the string will obtain the city
 * Create new columns and populate them with values obtained from the SUBSTRINGS
 ## Separate the Address, City, and State in the "OwnerAddress" Column 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Owner_Breakout.png">
 </p>
+
+```TSQL
+SELECT
+	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3),  													
+	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2), 
+	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
+FROM 
+	[Portfolio Project]..HousingData
+
+-- Create new columns
+ALTER TABLE 
+	HousingData
+ADD 
+	Owner_Address NVARCHAR(255),
+	Owner_City NVARCHAR(255),
+	Owner_State NVARCHAR(255);
+
+-- Populate the new columns
+UPDATE 
+	HousingData
+SET 
+	Owner_Address = PARSENAME(REPLACE(OwnerAddress,',','.'),3),
+	Owner_City = PARSENAME(REPLACE(OwnerAddress,',','.'),2),
+	Owner_State = PARSENAME(REPLACE(OwnerAddress,',','.'),1);
+```
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Owner_Results.png">
 </p>
 
-* PARESENAME is an alternative to SUBSTRING that does not recognize a ',' as a delimiter but instead recognizes a period '.' as one. 
+* PARESENAME is an alternative to SUBSTRING that does not recognize a comma(,) as a delimiter but instead recognizes a period(.) as one. 
    * Used REPLACE to substitute commas for periods 
 ## Use a CASE Statement to Change Y and N to Yes and No in the "SoldAsVacant" Column
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_Before.png">
 </p>
 
+```TSQL
+SELECT DISTINCT
+	(SoldAsVacant), COUNT(SoldAsVacant)
+FROM 
+	[Portfolio Project]..HousingData
+GROUP BY 
+	SoldAsVacant
+ORDER BY 2;
+```
 * Note that before making any changes, there are 52 occurrences where Y is displayed in the data and 399 occurrences where N is displayed.
 
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_Case.png">
 </p>
 
-* Specify the condition and what you want returned once that condition is met
-* Updates the HousingData table to reflect changes made in the CASE statement
+```TSQL
+-- Replace Y/N with Yes/No
+SELECT 
+	SoldAsVacant,
+CASE 
+	WHEN SoldAsVacant = 'Y' THEN 'Yes'
+	WHEN SoldAsVacant = 'N' THEN 'No'
+	ELSE SoldAsVacant
+	END;
+FROM 
+	[Portfolio Project]..HousingData;
 
+-- Populate
+UPDATE 
+	HousingData
+SET 
+	SoldAsVacant = CASE 
+	WHEN SoldAsVacant = 'Y' THEN 'Yes'
+	WHEN SoldAsVacant = 'N' THEN 'No'
+	ELSE SoldAsVacant
+	END;
+```
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_After.png">
 </p>
 
+* Specify the condition and what you want returned once that condition is met
+* Updates the HousingData table to reflect changes made in the CASE statement
 * Note that there are now more occurrences when Yes and No are displayed in the dataset due to converting Y/N to Yes/No.
 ## Identify and Delete all Duplicate Values from the Dataset
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/cte.png">
 </p>
 
+```TSQL
+WITH Rows_Duplicated
+AS
+(
+--PARTITION BY columns that contain duplicates 
+SELECT *, 
+	   ROW_NUMBER() OVER (PARTITION BY 
+	   ParcelID,
+	   PropertyAddress,
+	   SalePrice,
+	   SaleDate,
+	   LegalReference
+	   ORDER BY UniqueID) AS row_num
+FROM 
+	[Portfolio Project]..HousingData
+)
+SELECT *
+FROM 
+	Rows_Duplicated
+WHERE 
+	row_num > 1;
+
+--DELETE *
+--FROM 
+--	Rows_Duplicated
+--WHERE 
+--	row_num > 1
+```
+
 * 104 rows of duplicates were Identified 
 ## Drop Unused Columns
 <img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Delete.png">
 </p>
+
+```TSQL
+SELECT * 
+FROM 
+	[Portfolio Project]..HousingData
+
+ALTER TABLE 
+	[Portfolio Project]..HousingData
+DROP COLUMN 
+	OwnerAddress, 
+	PropertyAddress,
+	SaleDate;
+```
 
 * No longer need "PropertyAddress" and "OwnerAddress" because individual columns were created to represent address, city, and state.
 * No longer need "SaleDate" because the new column "Date_of_Sale" was created for the purpose of re-formatting the date. 
