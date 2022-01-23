@@ -18,9 +18,6 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 * Delete unused columns
 # Queries:
 ## Convert the Column "SaleDate" from a DateTime Format to a Standardized Date Format "YYYY-MM-DD"
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Date_Converted.png">
-</p>
-
 ```TSQL
 SELECT 
 	SaleDate, 
@@ -53,9 +50,6 @@ SET
     * However, there are some discrepancies where the Property Address generates a NULL address instead of a duplicate. 
 
 ### Replace All NULL addresses in "PropertyAddress" with Addresses that Have the Same Duplicated Parcel-ID
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/ISNULL.png">
-</p>
-
 ```TSQL
 SELECT 
 	a.ParcelID,
@@ -77,9 +71,6 @@ WHERE
 </p>
 
 ### Populate Values and Update Table 
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Update_property.png">
-</p> 
-
 ```TSQL
 UPDATE a
 SET 
@@ -93,11 +84,11 @@ JOIN
 WHERE 
 	a.PropertyAddress IS NULL
 ```
+<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/UpdateAddress.png">
+</p> 
+
 * To confirm that the addresses were populated, I ran the script, and it checks out that there are no longer any NULL values in the "PropertyAddress" column. 
 ## Separate the Address and City in the "PropertyAddress" Column 
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Breakout.png">
-</p>
-
 ```TSQL
 SELECT 
 	PropertyAddress,
@@ -127,9 +118,6 @@ SET
 
 * Create new columns and populate them with values obtained from the SUBSTRINGS
 ## Separate the Address, City, and State in the "OwnerAddress" Column 
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Owner_Breakout.png">
-</p>
-
 ```TSQL
 SELECT
 	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3),  													
@@ -160,9 +148,6 @@ SET
 * PARESENAME is an alternative to SUBSTRING that does not recognize a comma(,) as a delimiter but instead recognizes a period(.) as one. 
    * Used REPLACE to substitute commas for periods 
 ## Use a CASE Statement to Change Y and N to Yes and No in the "SoldAsVacant" Column
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_Before.png">
-</p>
-
 ```TSQL
 SELECT DISTINCT
 	(SoldAsVacant), COUNT(SoldAsVacant)
@@ -172,10 +157,10 @@ GROUP BY
 	SoldAsVacant
 ORDER BY 2;
 ```
-* Note that before making any changes, there are 52 occurrences where Y is displayed in the data and 399 occurrences where N is displayed.
-
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_Case.png">
+<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/YNBefore.png">
 </p>
+
+* Note that before making any changes, there are 52 occurrences where Y is displayed in the data and 399 occurrences where N is displayed.
 
 ```TSQL
 -- Replace Y/N with Yes/No
@@ -199,16 +184,13 @@ SET
 	ELSE SoldAsVacant
 	END;
 ```
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Y_N_After.png">
+<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/YNAfter.png">
 </p>
 
 * Specify the condition and what you want returned once that condition is met
 * Updates the HousingData table to reflect changes made in the CASE statement
 * Note that there are now more occurrences when Yes and No are displayed in the dataset due to converting Y/N to Yes/No.
 ## Identify and Delete all Duplicate Values from the Dataset
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/cte.png">
-</p>
-
 ```TSQL
 WITH Rows_Duplicated
 AS
@@ -240,9 +222,6 @@ WHERE
 
 * 104 rows of duplicates were Identified 
 ## Drop Unused Columns
-<img src="https://github.com/Apappas97/Data-Cleaning-in-SQL/blob/main/Images/Delete.png">
-</p>
-
 ```TSQL
 SELECT * 
 FROM 
