@@ -1,4 +1,4 @@
-# Data Cleaning in SQL
+# Data Cleaning in SQL - Real Estate Dataset
 In this project, I extracted and cleansed a Nashville-Housing dataset that contained discrepancies in duplicate records, formatting errors, NULL values, etc.. In the cleansing process I made the necessary adjustments to reduce these inconsistencies using Microsoft SQL Server to increase the utility and overall readability in the dataset.
 ## Demonstrated Skills: 
 * Converting Datatypes 
