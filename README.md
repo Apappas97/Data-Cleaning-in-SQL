@@ -1,6 +1,6 @@
 # Data Cleaning in SQL
 In this project, I extracted and cleansed a Nashville-Housing dataset that contained discrepancies in duplicate records, formatting errors, NULL values, etc.. In the cleansing process I made the necessary adjustments to reduce these inconsistencies using Microsoft SQL Server to increase the utility and overall readability in the dataset.
-# Demonstrated Skills: 
+## Demonstrated Skills: 
 * Converting Datatypes 
 * Populate columns containing NULL values 
 * Joins 
@@ -9,7 +9,7 @@ In this project, I extracted and cleansed a Nashville-Housing dataset that conta
 * Case Statements 
 * Window Functions (ROW
 * Common Table Expressions (CTE - WITH Clause)
-# Objectives:
+## Objectives:
 * Covert the Date column to have a Standardized Date format
 * Populate columns containing NULL values 
 * Use SUBSTRING and PARSENAME to break apart columns with full addresses 
